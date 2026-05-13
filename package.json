@@ -1,0 +1,35 @@
+{
+  "name": "com.viven.sdk",
+  "version": "2.2.4",
+  "displayName": "VIVEN SDK",
+  "description": "VIVEN에서 사용 가능한 컴포넌트와 스크립트를 제공합니다.",
+  "unity": "6000.0",
+  "unityRelease": "68f1",
+  "author": {
+    "name": "Twentyoz",
+    "email": "hello@twentyoz.kr",
+    "url": "https://play.viven.app/"
+  },
+  "documentationUrl": "https://sdkdoc.viven.app/",
+  "keywords": [
+    "viven",
+    "sdk",
+    "openxr",
+    "addressables",
+    "vr"
+  ],
+  "dependencies": {
+    "com.unity.addressables": "2.8.1",
+    "com.unity.timeline": "1.8.10",
+    "com.unity.xr.management": "4.5.3",
+    "com.unity.xr.openxr": "1.16.1",
+    "com.unity.nuget.newtonsoft-json" : "3.2.1"
+  },
+  "samples": [
+    {
+      "displayName": "VIVEN SDK Samples",
+      "description": "VIVEN SDK 전체 샘플입니다.",
+      "path": "Samples~"
+    }
+  ]
+}
