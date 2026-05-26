@@ -158,13 +158,55 @@ namespace TwentyOz.VivenSDK.Scripts.Editor.Core
         }
 
         /// <summary>
+        /// Viven 클라이언트가 설치되어 있는지 확인합니다.
+        /// </summary>
+        public static bool IsVivenInstalled()
+        {
+            return TryGetVivenExecutablePath(out _);
+        }
+
+        /// <summary>
+        /// 레지스트리에서 Viven 실행파일 경로를 가져옵니다. Viven이 설치되어 있지 않으면 false를 반환합니다.
+        /// </summary>
+        public static bool TryGetVivenExecutablePath(out string vivenPath)
+        {
+            vivenPath = null;
+#if UNITY_EDITOR_WIN
+            // viven:// URL 프로토콜 핸들러는 Viven 설치 시 등록됨. 키가 없으면 GetValue가 null을 반환한다.
+            const string registryPath = @"HKEY_CLASSES_ROOT\viven\shell\open\command";
+            var          val          = Registry.GetValue(registryPath, "", null) as string;
+            if (string.IsNullOrEmpty(val) || val.Length < 5)
+                return false;
+
+            // 레지스트리 값은 `"C:\path\to\Viven.exe" "%1"` 형식이므로 끝의 ` "%1"`(5글자)를 제거하고 따옴표를 벗긴다.
+            vivenPath = val.Remove(val.Length - 5, 5).Replace("\"", "");
+            return !string.IsNullOrEmpty(vivenPath);
+#else
+            return false;
+#endif
+        }
+
+        /// <summary>
+        /// Viven 미설치 시 안내 다이얼로그를 띄웁니다.
+        /// </summary>
+        private static void ShowVivenNotInstalledDialog()
+        {
+            const string message = "Viven 클라이언트가 설치되어 있지 않습니다.\nhttps://viven.app 에서 다운로드 후 다시 시도해주세요.";
+            Debug.LogError(message);
+            EditorUtility.DisplayDialog("Viven 미설치", message, "OK");
+        }
+
+        /// <summary>
         /// Viven Launcher를 통해 Viven 실행
         /// </summary>
         public static void PlayVivenLocal()
         {
-            const string registryPath = @"HKEY_CLASSES_ROOT\viven\shell\open\command";
-            var          val          = Registry.GetValue(registryPath, "", "").ToString();
-            var vivenPath = val.Remove(val.Length - 5, 5).Replace("\"", "");
+            if (!TryGetVivenExecutablePath(out var vivenPath))
+            {
+                ShowVivenNotInstalledDialog();
+                return;
+            }
+
             var processInfo = new ProcessStartInfo
             {
                 Arguments       = $"viven://{VivenDomain.WebURL.GetDomainWebURL()}?d={VivenDomain.DTS.GetDomainDTS()}&t={EditorPrefs.GetString("user-token")}&s=true",
