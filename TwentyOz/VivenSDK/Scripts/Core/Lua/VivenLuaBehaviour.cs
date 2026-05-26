@@ -40,15 +40,15 @@ namespace TwentyOz.VivenSDK.Scripts.Core.Lua
     [Serializable]
     public class Injection
     {
-        public ObjectValue[] objectValues;
-        public GameObjectValue[] gameObjectValues;
-        public Vector3Value[] vector3Values;
-        public FloatValue[] floatValue;
-        public IntValue[] intValue;
-        public BoolValue[] boolValue;
-        public StringValue[] stringValue;
-        public ColorValue[] colorValue;
-        public VivenScriptValue[] vivenScriptValue;
+        public ObjectValue[] objectValues = Array.Empty<ObjectValue>();
+        public GameObjectValue[] gameObjectValues = Array.Empty<GameObjectValue>();
+        public Vector3Value[] vector3Values = Array.Empty<Vector3Value>();
+        public FloatValue[] floatValue = Array.Empty<FloatValue>();
+        public IntValue[] intValue = Array.Empty<IntValue>();
+        public BoolValue[] boolValue = Array.Empty<BoolValue>();
+        public StringValue[] stringValue = Array.Empty<StringValue>();
+        public ColorValue[] colorValue = Array.Empty<ColorValue>();
+        public VivenScriptValue[] vivenScriptValue = Array.Empty<VivenScriptValue>();
     }
 
     /// <summary>
